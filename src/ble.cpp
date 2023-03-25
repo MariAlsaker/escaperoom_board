@@ -37,8 +37,6 @@ void init_ble(void){
     Serial.println("Bluetooth® device active, waiting for connections...");
 }
 
-void set_
-
 void tick_ble(void){
     // poll for Bluetooth® Low Energy events
     BLE.poll();
