@@ -52,10 +52,6 @@ static inline handler_returns handler_c(void){
 
 // Disability Handler
 static inline handler_returns handler_d(void){
-    // if(digitalRead(CO_STATE_PIN_ERROR)){
-    //     return RET_ERROR;
-    // }
-
     if(!digitalRead(CO_STATE_PIN)){
         return RET_DONE;
     }else{
@@ -65,10 +61,6 @@ static inline handler_returns handler_d(void){
 
 // Exposure Handler
 static inline handler_returns handler_e(void){
-    // if(digitalRead(CO_STATE_PIN_ERROR)){
-    //     return RET_ERROR;
-    // }
-
     if(!digitalRead(CO_STATE_PIN)){
         return RET_DONE;
     }else{
@@ -154,9 +146,4 @@ void tick_gamestate(void){
         case GS_FINISHED:
             break;
     }
-
-    // if(millis() - sync_timestamp > 200){
-    //     sync_timestamp = millis();
-    //     send_pack(CMD_SYNC, sync_payload, 0x05);
-    // }
 }
