@@ -1,12 +1,9 @@
 #include <Arduino.h>
 #include "defines.h"
 #include "gamestate.h"
-#include "lock_control.h"
 #include "input.h"
-#include "soundboard.h"
 #include "lcd.h"
 #include "led_control.h"
-#include "com.h"
 #include "ble.h"
 
 uint32_t subroutine_timestamp = 0;

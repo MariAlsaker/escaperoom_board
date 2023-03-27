@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include "gamestate.h"
 #include "defines.h"
-#include "lock_control.h"
-#include "com.h"
 #include "cmd.h"
 
 enum gamestates gamestate = GS_A;
