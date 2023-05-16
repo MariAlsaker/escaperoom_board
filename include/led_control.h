@@ -3,12 +3,11 @@
 
 #include <stdint.h>
 
-#define LED_COUNT 4
+#define LED_COUNT 2
 
 enum led_index {
-    LED_R = 0,
-    LED_Y = 1,
-    LED_G = 2
+    LED_G = 0,
+    LED_R = 1
 };
 
 enum led_mode {
@@ -37,6 +36,7 @@ typedef struct {
 } led_t;
 
 void init_ledcontrol(void);
+void set_ledmode(enum led_index led, enum led_mode mode);
 void tick_leds(void);
 
 #endif

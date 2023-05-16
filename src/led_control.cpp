@@ -2,35 +2,29 @@
 #include "led_control.h"
 #include "defines.h"
 
-#define RESOLUTION 50
+#define RESOLUTION 10
 
 static led_t leds[LED_COUNT];
 
 void init_ledcontrol(void){
     memset(leds, 0, sizeof(led_t) * LED_COUNT);
     
-    leds[0].pin = LED1_PIN;
-    leds[1].pin = LED2_PIN;
-    leds[2].pin = LED3_PIN;
-    leds[3].pin = 5;
+    leds[0].pin = REDLED_PIN;
+    leds[1].pin = GREENLED_PIN;
 
     #ifdef TESTMODE
-        leds[0].mode = LED_BLINK;
+        leds[0].mode = LED_OFF;
         leds[0].intensity = 255;
-        leds[0].speed = 100;
+        leds[0].speed = 5;
         
-        leds[1].mode = LED_PULSE;
+        leds[1].mode = LED_OFF;
         leds[1].intensity = 255;
-        leds[1].speed = 100;
-
-        leds[2].mode = LED_PULSE;
-        leds[2].intensity = 255;
-        leds[2].speed = 100;
-
-        leds[3].mode = LED_BLINK;
-        leds[3].intensity = 255;
-        leds[3].speed = 100;
+        leds[1].speed = 5;
     #endif
+}
+
+void set_ledmode(enum led_index led, enum led_mode mode){
+    leds[led].mode = mode;
 }
 
 uint8_t pin_software_pwm(uint8_t pin){
@@ -137,7 +131,7 @@ void tick_leds(void){
         //         digitalWrite(leds[i].pin, digitalRead(leds[i].pin));
         //     }
         // }else{
-            analogWrite(leds[i].pin, leds[i].power); //Apply power
+            analogWrite(leds[i].pin, 255 - leds[i].power); //Apply power
         //}
     }
 }
