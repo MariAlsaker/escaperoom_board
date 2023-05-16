@@ -1,6 +1,7 @@
 #include <Keypad.h>
 #include "input.h"
 #include "defines.h"
+#include "gamestate.h"
 
 const byte ROWS = 4; //four rows
 const byte COLS = 3; //three columns
@@ -23,30 +24,8 @@ uint8_t input_enabled = 0;
 char input[8];
 uint8_t input_idx = 0;
 
-char accepted_input[8];
-uint8_t accepted_input_len = 0;
-
 void init_input(void){
 
-}
-
-void reset_input(void){
-    input_idx = 0;
-    accepted_input_len = 0;
-}
-
-void enable_input(void){
-    input_enabled = 1;
-    reset_input();
-}
-
-void disable_input(void){
-    input_enabled = 0;
-    reset_input();
-}
-
-uint8_t get_accepted_input_len(void){
-    return accepted_input_len;
 }
 
 void tick_input(void){
@@ -61,27 +40,16 @@ void tick_input(void){
                     case PRESSED:
                         //debug_msg = " PRESSED.";
                         if(kpd.key[i].kchar == '*'){
-                            if(input_idx){
-                                Serial.println(" Wipe!");
-                                //memset(input, 0, sizeof(char) * 8);
-                                input_idx = 0;
-                            }
+                            wipe_char_gamestate();
                         }else if(kpd.key[i].kchar == '#'){
-                            memcpy(accepted_input, input, sizeof(char) * input_idx);
-                            accepted_input_len = input_idx;
-
-                            //memset(input, 0, sizeof(char) * 8);
-                            input_idx = 0;
-
-                            Serial.print("\n\rAccepted input: ");
-                            for(uint8_t i = 0; i < accepted_input_len; i++){
-                                Serial.print(accepted_input[i]);
-                            }
-                            Serial.println("");
-                        }else if(input_idx < 8){
-                            input[input_idx++] = kpd.key[i].kchar;
-                            Serial.print(kpd.key[i].kchar);
+                            request_verification();
+                        }else{
+                            input_char_gamestate(kpd.key[i].kchar);
                         }
+                        break;
+                    case RELEASED:
+                        break;
+                    default:
                         break;
                 }
                 // Serial.print("Key ");
