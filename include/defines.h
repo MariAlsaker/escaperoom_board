@@ -5,32 +5,29 @@
 
 #define TESTMODE
 
-#define LCD_RW              43
-#define LCD_RS              41
-#define LCD_EN              39
-#define LCD_D4              31
-#define LCD_D5              33
-#define LCD_D6              35
-#define LCD_D7              37
+#define LCD_RS              2
+#define LCD_RW              3
+#define LCD_EN              4
+#define LCD_D4              5
+#define LCD_D5              6
+#define LCD_D6              7
+#define LCD_D7              8
 
-#define LED1_PIN            11
-#define LED2_PIN            12
-#define LED3_PIN            13
+#define REDLED_PIN          9
+#define GREENLED_PIN        10
 
-#define BUZZER_PIN          8
+#define AO_STATE_PIN        11 // Airway Obstruction
+#define BL_STATE_PIN        12 // Bleeding
+#define PT_STATE_PIN_ERROR  13 // Pneumothorax Error
+#define PT_STATE_PIN        14 // Pneumothorax
 
-#define AO_STATE_PIN        14 // Airway Obstruction
-#define PT_STATE_PIN        15 // Pneumothorax
-#define PT_STATE_PIN_ERROR  16 // Pneumothorax Error
-#define BL_STATE_PIN        17 // Bleeding
-#define CO_STATE_PIN        18 // Consciousness
 
-#define KEYPAD_ROW1         40
-#define KEYPAD_ROW2         42
-#define KEYPAD_ROW3         44
-#define KEYPAD_ROW4         46
-#define KEYPAD_COL1         48
-#define KEYPAD_COL2         50
-#define KEYPAD_COL3         52
+#define KEYPAD_ROW1         15
+#define KEYPAD_ROW2         16
+#define KEYPAD_ROW3         17
+#define KEYPAD_ROW4         18
+#define KEYPAD_COL1         19
+#define KEYPAD_COL2         20
+#define KEYPAD_COL3         21
 
 #endif
