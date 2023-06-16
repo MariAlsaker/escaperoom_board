@@ -26,6 +26,8 @@ void setup() {
   init_lcd();
   init_ble();
 
+  poll_debug_gamestate();
+
   subroutine_timestamp = millis();
 }
 

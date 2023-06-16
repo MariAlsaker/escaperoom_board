@@ -28,6 +28,20 @@ void init_input(void){
 
 }
 
+uint8_t debug_input(void){
+    if(kpd.getKeys()){
+        for (int i = 0; i < LIST_MAX; i++){ // Scan the whole key list.
+            if (kpd.key[i].stateChanged){
+                        if(kpd.key[i].kstate == PRESSED && kpd.key[i].kchar == '#'){
+                            return 1;
+                        }else{
+                            return 0;
+                        }
+            }
+        }
+    }
+}
+
 void tick_input(void){
     // Fills kpd.key[ ] array with up-to 10 active keys.
     // Returns true if there are ANY active keys.

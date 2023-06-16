@@ -28,6 +28,21 @@ char* get_numberbufstart(void){ return &textbuffer[2]; }
 
 void set_state_lcd(lcd_states newstate){ lcd_state = newstate; }
 
+void debug_state_lcd(uint8_t* states, uint8_t len){
+    if(len == 4){
+        char* ptr = get_numberbufstart();
+        for(int i = 0; i < 4; i++){
+            if(states[i]){
+                *ptr = '1';
+            }else{
+                *ptr = '0';
+            }
+            ptr++;
+        }
+
+    }
+}
+
 void tick_lcd(void)
 {
     if(millis() - last_update > LCD_UPDATE_INTERVAL){ //Slow LCD refresh rate
@@ -89,7 +104,14 @@ void tick_lcd(void)
                 lcd->print("SYSTEM ONLINE");
                 lcd->setCursor(0, 1);
                 lcd->print("STATUS 0xF721");
-            
+                break;
+            case L_DEBUG:
+                lcd->clear();
+                lcd->setCursor(0, 0);
+                lcd->print("DEBUG MODE");
+                lcd->setCursor(0, 1);
+                lcd->print(textbuffer);
+                break;
         }
     }
 }

@@ -12,6 +12,7 @@
 
 enum gamestates
 {
+    GS_DEBUG, // Debugging
     GS_A, // Airway Obstruction
     GS_B, // Pneumothorax
     GS_B_TIMEOUT,
@@ -33,6 +34,7 @@ enum handler_returns
 };
 
 void init_gamestate(void);
+void poll_debug_gamestate(void);
 uint8_t input_char_gamestate(char input);
 uint8_t request_verification(void);
 void wipe_char_gamestate(void);

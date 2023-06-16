@@ -4,6 +4,7 @@
 #include "cmd.h"
 #include "lcd.h"
 #include "led_control.h"
+#include "input.h"
 
 uint32_t timestamp_debug = 0;
 char debug_text[128];
@@ -22,6 +23,12 @@ void init_gamestate(void){
     timestamp = millis();
     numberbuf = get_numberbufstart();
     input_accepted = 0;
+}
+
+void poll_debug_gamestate(void){
+    if(debug_input()){
+        gamestate = GS_DEBUG;
+    }
 }
 
 uint8_t input_char_gamestate(char input)
@@ -125,6 +132,15 @@ static inline handler_returns handler_e(void){
         }
     }
     return RET_INPROGRESS;
+}
+
+static inline handler_returns handler_debug(void){
+    uint8_t io_states[4];
+    io_states[0] = digitalRead(AO_STATE_PIN);
+    io_states[1] = digitalRead(BL_STATE_PIN);
+    io_states[2] = digitalRead(PT_STATE_PIN_ERROR);
+    io_states[3] = digitalRead(PT_STATE_PIN);
+    debug_state_lcd(io_states, 4);
 }
 
 void tick_gamestate(void){
@@ -248,6 +264,13 @@ void tick_gamestate(void){
             set_state_lcd(L_FINISH);
             set_ledmode(LED_G, LED_PULSE);
             set_ledmode(LED_R, LED_OFF);
+            break;
+        //Debug
+        case GS_DEBUG:
+            handler_debug();
+            set_state_lcd(L_DEBUG);
+            set_ledmode(LED_G, LED_PULSE);
+            set_ledmode(LED_R, LED_PULSE);
             break;
     }
 }
