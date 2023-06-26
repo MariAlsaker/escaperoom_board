@@ -28,6 +28,7 @@ void init_gamestate(void){
 void poll_debug_gamestate(void){
     if(debug_input()){
         gamestate = GS_DEBUG;
+        set_lcd_dirty();
     }
 }
 
@@ -39,6 +40,7 @@ uint8_t input_char_gamestate(char input)
         *numberbuf = input;
         numberbuf++;
         *numberbuf = '\0'; //Overflowing is expected
+        set_lcd_dirty();
         return 1;
     }else{
         return 0;
@@ -51,6 +53,7 @@ void wipe_char_gamestate(void)
 
     numberbuf = get_numberbufstart();
     memset(numberbuf, ' ', sizeof(char) * 8);
+    set_lcd_dirty();
 }
 
 uint8_t request_verification(void)

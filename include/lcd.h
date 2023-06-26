@@ -15,6 +15,7 @@ enum lcd_states
 };
 
 void init_lcd(void);
+void set_lcd_dirty(void);
 void set_state_lcd(lcd_states newstate);
 void debug_state_lcd(uint8_t* states, uint8_t len);
 char* get_numberbufstart(void);
