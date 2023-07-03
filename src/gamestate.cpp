@@ -8,6 +8,8 @@
 
 uint32_t timestamp_debug = 0;
 char debug_text[128];
+uint8_t debug_io_states[4];
+uint8_t debug_prev_io_states[4];
 
 enum gamestates gamestate = GS_A;
 uint32_t timestamp = 0;
@@ -138,12 +140,18 @@ static inline handler_returns handler_e(void){
 }
 
 static inline handler_returns handler_debug(void){
-    uint8_t io_states[4];
-    io_states[0] = digitalRead(AO_STATE_PIN);
-    io_states[1] = digitalRead(BL_STATE_PIN);
-    io_states[2] = digitalRead(PT_STATE_PIN_ERROR);
-    io_states[3] = digitalRead(PT_STATE_PIN);
-    debug_state_lcd(io_states, 4);
+    debug_io_states[0] = digitalRead(AO_STATE_PIN);
+    debug_io_states[1] = digitalRead(BL_STATE_PIN);
+    debug_io_states[2] = digitalRead(PT_STATE_PIN_ERROR);
+    debug_io_states[3] = digitalRead(PT_STATE_PIN);
+
+    //If state has changed, update LCD
+    if(memcmp(debug_io_states, debug_prev_io_states, sizeof(uint8_t) * 4)){
+        memcpy(debug_prev_io_states, debug_io_states, sizeof(uint8_t) * 4);
+        debug_state_lcd(debug_io_states, 4);
+    }
+
+    return RET_DONE;
 }
 
 void tick_gamestate(void){
@@ -215,6 +223,7 @@ void tick_gamestate(void){
             if(millis() - timestamp > SUCCESS_TIME){
                 timestamp = millis();
                 gamestate = GS_E;
+                set_lcd_dirty();
             }
             break;
         //Disability Timeout
@@ -225,6 +234,7 @@ void tick_gamestate(void){
             sync_payload[3] = TIMEOUT;
             if(millis() - timestamp > D_TIMEOUT_MS){
                 gamestate = GS_D;
+                set_lcd_dirty();
             }
             break;
         //Exposure
@@ -240,6 +250,7 @@ void tick_gamestate(void){
                 sync_payload[4] = SOLVED;
                 timestamp = millis();
                 gamestate = GS_E_SUCCESS;
+                set_lcd_dirty();
             }
             break;
         //Exposure success time
@@ -250,6 +261,7 @@ void tick_gamestate(void){
             if(millis() - timestamp > SUCCESS_TIME){
                 timestamp = millis();
                 gamestate = GS_FINISHED;
+                set_lcd_dirty();
             }
             break;
         //Exposure Timeout
@@ -260,6 +272,7 @@ void tick_gamestate(void){
             sync_payload[4] = TIMEOUT;
             if(millis() - timestamp > E_TIMEOUT_MS){
                 gamestate = GS_E;
+                set_lcd_dirty();
             }
             break;
         //Finish
