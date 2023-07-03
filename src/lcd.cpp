@@ -31,7 +31,6 @@ char* get_numberbufstart(void){ return &textbuffer[2]; }
 
 void set_state_lcd(lcd_states newstate){ 
     lcd_state = newstate; 
-    lcd_dirty = 1;
 }
 
 void debug_state_lcd(uint8_t* states, uint8_t len){
@@ -68,9 +67,9 @@ void tick_lcd(void)
                 }
                 if(blink_state){
                     lcd->setCursor(0, 0);
-                    lcd->print("ERR DEVICE");
+                    lcd->print("PLEASE WAIT...");
                     lcd->setCursor(0, 1);
-                    lcd->print("MALFUNCTION");
+                    lcd->print("DEVICE REBOOTING");
                 }else{
                     lcd->clear();
                 }
