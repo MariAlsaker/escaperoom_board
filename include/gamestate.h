@@ -34,6 +34,7 @@ enum handler_returns
 };
 
 void init_gamestate(void);
+enum gamestates get_gamestate(void);
 void poll_debug_gamestate(void);
 uint8_t input_char_gamestate(char input);
 uint8_t request_verification(void);

@@ -1,5 +1,6 @@
 #include <ArduinoBLE.h>
 #include "ble.h"
+#include "gamestate.h"
 
 BLEService escaperoom_service("19B10010-E8F2-537E-4F6C-D104768A1214"); // create service
 
@@ -28,7 +29,6 @@ void init_ble(void){
     // add the service
     BLE.addService(escaperoom_service);
 
-    board_characteristic.writeValue(0xDEADBEEF);
     boardreset_characteristic.writeValue(false);
 
     // start advertising
@@ -40,4 +40,6 @@ void init_ble(void){
 void tick_ble(void){
     // poll for Bluetooth® Low Energy events
     BLE.poll();
+
+    board_characteristic.writeValue((uint32_t) get_gamestate());
 }

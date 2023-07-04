@@ -27,6 +27,10 @@ void init_gamestate(void){
     input_accepted = 0;
 }
 
+enum gamestates get_gamestate(void){
+    return gamestate;
+}
+
 void poll_debug_gamestate(void){
     if(debug_input()){
         gamestate = GS_DEBUG;
