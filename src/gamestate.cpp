@@ -188,6 +188,7 @@ void tick_gamestate(void){
                 sync_payload[1] = SOLVED;
                 gamestate = GS_C;
             }
+            // Elif *condition* to send into state GS_B_TIMEOUT??
             break;
         //Breathing Timeout
         case GS_B_TIMEOUT:
