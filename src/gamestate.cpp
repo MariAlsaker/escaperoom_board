@@ -73,7 +73,7 @@ uint8_t request_verification(void)
 // Airway Handler
 static inline handler_returns handler_a(void){
     set_state_lcd(L_IDLE);
-    if(!digitalRead(AO_STATE_PIN)){
+    if(!digitalRead(AO_STATE_PIN)){ // LOW means not blocked
         return RET_DONE;
     }else{
         return RET_INPROGRESS;
@@ -83,11 +83,11 @@ static inline handler_returns handler_a(void){
 // Breathing Handler
 static inline handler_returns handler_b(void){
     set_state_lcd(L_IDLE);
-    if(!digitalRead(PT_STATE_PIN_ERROR)){
+    if(digitalRead(PT_STATE_PIN_ERROR)){ // HIGH means error
         return RET_ERROR;
     }
 
-    if(!digitalRead(PT_STATE_PIN)){
+    if(digitalRead(PT_STATE_PIN)){ // HIGH means correct
         return RET_DONE;
     }else{
         return RET_INPROGRESS;
@@ -97,8 +97,8 @@ static inline handler_returns handler_b(void){
 // Circulation Handler
 static inline handler_returns handler_c(void){
     set_state_lcd(L_IDLE);
-    if(!digitalRead(BL_STATE_PIN)){
-        return RET_DONE;
+    if(digitalRead(BL_STATE_PIN)){ // HIGH means pump stopped 
+            return RET_DONE;
     }else{
         return RET_INPROGRESS;
     }
@@ -188,7 +188,10 @@ void tick_gamestate(void){
                 sync_payload[1] = SOLVED;
                 gamestate = GS_C;
             }
-            // Elif *condition* to send into state GS_B_TIMEOUT??
+            else if(ret == RET_ERROR){
+                sync_payload[1] = TIMEOUT;
+                gamestate = GS_B_TIMEOUT;
+            }
             break;
         //Breathing Timeout
         case GS_B_TIMEOUT:
